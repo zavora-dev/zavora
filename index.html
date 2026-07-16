@@ -557,7 +557,7 @@
     <p>Tell me what you're building — I'll reply within a day with next steps.</p>
     <div class="cta-actions">
       <a href="tel:07351010035" class="btn-primary">Call 07351 010035</a>
-      <a href="mailto:zavora_web@outlook.com" class="btn-ghost">Or email zavora_web@outlook.com</a>
+      <a href="mailto:zavora_web@outlook.com" class="btn-ghost" id="email-btn" onclick="try{navigator.clipboard.writeText('zavora_web@outlook.com');var el=document.getElementById('email-btn');var old=el.textContent;el.textContent='Copied — zavora_web@outlook.com';setTimeout(function(){el.textContent=old;},2500);}catch(e){}">Or email zavora_web@outlook.com</a>
     </div>
   </div>
 </section>
