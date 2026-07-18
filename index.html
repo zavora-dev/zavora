@@ -1,0 +1,1380 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Zavora — web design, redesign, mobile optimisation, SEO basics, Google Business Profile setup, maintenance and hosting. Fast, affordable, ongoing support.">
+<title>Zavora — Web Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #070c1a;
+    --bg-alt: #0b1330;
+    --surface: #101a3d;
+    --surface-2: #16224b;
+    --line: rgba(148,168,224,0.16);
+    --line-strong: rgba(148,168,224,0.32);
+    --text: #e9edf9;
+    --muted: #8b96c0;
+    --muted-dim: #5c6690;
+    --accent: #4f7dfa;
+    --accent-soft: rgba(79,125,250,0.14);
+    --measure: #6f86c9;
+  }
+ 
+  *{ margin:0; padding:0; box-sizing:border-box; }
+ 
+  html{ scroll-behavior:smooth; }
+ 
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+ 
+  ::selection{ background:var(--accent); color:#fff; }
+ 
+  a{ color:inherit; text-decoration:none; }
+ 
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+ 
+  h1,h2,h3{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    letter-spacing:-0.02em;
+  }
+ 
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--measure);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:16px;
+    height:1px;
+    background:var(--measure);
+    display:inline-block;
+  }
+ 
+  /* ---------- scroll progress ---------- */
+  .scroll-progress{
+    position:fixed; top:0; left:0; height:2px; width:0%;
+    background:var(--accent); z-index:100;
+    box-shadow:0 0 8px rgba(79,125,250,0.6);
+  }
+ 
+  /* ---------- background blueprint grid ---------- */
+  .grid-bg{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:64px 64px;
+    -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent 75%);
+            mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent 75%);
+    opacity:0.5;
+  }
+ 
+  /* ---------- nav ---------- */
+  header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    backdrop-filter:blur(10px);
+    background:rgba(7,12,26,0.72);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:20px 32px;
+    max-width:1180px;
+    margin:0 auto;
+  }
+  .logo{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:22px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .logo .dot{
+    width:8px; height:8px;
+    border-radius:1px;
+    background:var(--accent);
+    display:inline-block;
+    transform:rotate(45deg);
+    transition:transform .5s cubic-bezier(.34,1.56,.64,1), border-radius .3s ease;
+  }
+  .logo .word{
+    display:inline-block;
+    transition:transform .35s cubic-bezier(.34,1.56,.64,1), color .35s ease;
+  }
+  .logo:hover .dot{ transform:rotate(225deg) scale(1.3); border-radius:50%; }
+  .logo:hover .word{ transform:translateY(-4px); color:var(--accent); }
+  .nav-links{
+    display:flex;
+    gap:36px;
+    font-size:14px;
+    color:var(--muted);
+  }
+  .nav-links a{ position:relative; transition:color .2s; padding-bottom:2px; }
+  .nav-links a::after{
+    content:''; position:absolute; left:0; right:100%; bottom:0; height:1px;
+    background:var(--accent); transition:right .3s cubic-bezier(.4,0,.2,1);
+  }
+  .nav-links a:hover{ color:var(--text); }
+  .nav-links a:hover::after{ right:0; }
+  .nav-cta{
+    font-size:14px;
+    padding:9px 18px;
+    border:1px solid var(--line-strong);
+    border-radius:2px;
+    transition:border-color .2s, background .2s;
+  }
+  .nav-cta:hover{ border-color:var(--accent); background:var(--accent-soft); }
+  .nav-mobile-hide{ display:flex; }
+ 
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    z-index:1;
+    padding:96px 32px 80px;
+  }
+  .hero-inner{
+    max-width:1180px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:1.1fr 1fr;
+    gap:56px;
+    align-items:center;
+  }
+  .hero h1{
+    font-size:clamp(38px, 5vw, 62px);
+    line-height:1.05;
+    margin:20px 0 24px;
+  }
+  .hero h1 em{
+    font-style:normal;
+    font-weight:700;
+    color:var(--accent);
+  }
+  .hero p{
+    color:var(--muted);
+    font-size:17px;
+    max-width:460px;
+    margin-bottom:32px;
+  }
+  .hero-actions{
+    display:flex;
+    gap:16px;
+    align-items:center;
+  }
+  .btn-primary{
+    background:var(--accent);
+    color:#fff;
+    padding:13px 24px;
+    border-radius:2px;
+    font-size:14px;
+    font-weight:500;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    transition:transform .2s, box-shadow .2s;
+    box-shadow:0 0 0 0 rgba(79,125,250,0.4);
+  }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 8px 24px rgba(79,125,250,0.35); }
+  .btn-ghost{
+    color:var(--muted);
+    font-size:14px;
+    border-bottom:1px solid var(--line-strong);
+    padding-bottom:2px;
+    transition:color .2s, border-color .2s;
+  }
+  .btn-ghost:hover{ color:var(--text); border-color:var(--text); }
+ 
+  /* blueprint mock browser */
+  .mock{
+    position:relative;
+    background:var(--surface);
+    border:1px solid var(--line-strong);
+    border-radius:6px;
+    overflow:visible;
+    box-shadow:0 40px 80px -30px rgba(0,0,0,0.6);
+    animation:float 6s ease-in-out infinite;
+  }
+  @keyframes float{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-10px); }
+  }
+  .mock-bar{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:10px 14px;
+    border-bottom:1px solid var(--line);
+  }
+  .mock-dot{ width:8px; height:8px; border-radius:50%; background:var(--line-strong); }
+  .mock-url{
+    margin-left:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--muted-dim);
+    background:var(--bg-alt);
+    padding:3px 10px;
+    border-radius:3px;
+  }
+  .mock-body{
+    padding:22px;
+    display:grid;
+    gap:12px;
+    position:relative;
+  }
+  .mock-row{ display:flex; gap:12px; }
+  .mock-block{
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    border-radius:3px;
+  }
+  .mock-anim{
+    animation:pulse 3.2s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{ opacity:1; }
+    50%{ opacity:0.55; }
+  }
+  .dim-line{
+    position:absolute;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    color:var(--measure);
+    display:flex;
+    align-items:center;
+    gap:4px;
+    white-space:nowrap;
+  }
+  .dim-line::before, .dim-line::after{
+    content:'';
+    width:5px; height:5px;
+    border-left:1px solid var(--measure);
+    border-top:1px solid var(--measure);
+  }
+  .dim-top{ top:-22px; left:22px; right:22px; justify-content:space-between; }
+  .dim-side{ top:22px; bottom:22px; right:-46px; writing-mode:vertical-rl; }
+ 
+  /* ---------- section shared ---------- */
+  section{ position:relative; z-index:1; padding:100px 0; }
+  .section-head{ max-width:620px; margin-bottom:56px; }
+  .section-head h2{ font-size:clamp(30px,3.4vw,42px); margin-top:16px; }
+  .section-head p{ color:var(--muted); margin-top:14px; font-size:16px; }
+ 
+  /* ---------- services ---------- */
+  .services{ border-top:1px solid var(--line); }
+  .service-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+    gap:20px;
+  }
+  .service-card{
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:28px 26px;
+    transition:background .25s, border-color .25s;
+  }
+  .service-card:hover{ background:var(--surface); border-color:var(--line-strong); }
+  .service-tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--muted-dim);
+    letter-spacing:0.08em;
+  }
+  .service-card h3{
+    font-size:24px;
+    margin:14px 0 10px;
+  }
+  .service-card p{
+    color:var(--muted);
+    font-size:14.5px;
+  }
+ 
+  /* ---------- why choose me ---------- */
+  .why{ border-top:1px solid var(--line); }
+  .why-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(210px, 1fr));
+    gap:28px;
+  }
+  .why-card{
+    padding:24px;
+    border:1px solid var(--line);
+    border-radius:6px;
+    transition:border-color .25s, background .25s;
+  }
+  .why-card:hover{ border-color:var(--line-strong); background:var(--surface); }
+  .why-num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--measure);
+    margin-bottom:12px;
+  }
+  .why-card h3{ font-size:19px; margin-bottom:8px; }
+  .why-card p{ color:var(--muted); font-size:14px; }
+ 
+  /* ---------- process ---------- */
+  .process{ border-top:1px solid var(--line); }
+  .process-list{ display:flex; flex-direction:column; }
+  .process-item{
+    display:grid;
+    grid-template-columns:90px 1fr 1.3fr;
+    gap:32px;
+    padding:34px 0;
+    border-top:1px solid var(--line);
+    align-items:baseline;
+  }
+  .process-item:last-child{ border-bottom:1px solid var(--line); }
+  .process-num{
+    font-family:'JetBrains Mono', monospace;
+    color:var(--measure);
+    font-size:13px;
+  }
+  .process-item h3{ font-size:22px; }
+  .process-item p{ color:var(--muted); font-size:14.5px; }
+ 
+  /* ---------- cta ---------- */
+  .cta{
+    border-top:1px solid var(--line);
+    text-align:center;
+  }
+  .cta h2{ font-size:clamp(32px,4vw,48px); }
+  .cta p{ color:var(--muted); margin:16px 0 34px; }
+  .cta-actions{ display:flex; gap:16px; justify-content:center; align-items:center; flex-wrap:wrap; }
+ 
+  /* ---------- footer ---------- */
+  footer{
+    border-top:1px solid var(--line);
+    padding:40px 0;
+  }
+  .footer-inner{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    color:var(--muted-dim);
+    font-size:13px;
+  }
+  .footer-links{ display:flex; gap:24px; }
+  .footer-links a:hover{ color:var(--muted); }
+ 
+  /* ---------- reveal ---------- */
+  .reveal{ opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+  .service-grid .reveal:nth-child(1){ transition-delay:0ms; }
+  .service-grid .reveal:nth-child(2){ transition-delay:60ms; }
+  .service-grid .reveal:nth-child(3){ transition-delay:120ms; }
+  .service-grid .reveal:nth-child(4){ transition-delay:180ms; }
+  .service-grid .reveal:nth-child(5){ transition-delay:240ms; }
+  .service-grid .reveal:nth-child(6){ transition-delay:300ms; }
+  .service-grid .reveal:nth-child(7){ transition-delay:360ms; }
+  .why-grid .reveal:nth-child(1){ transition-delay:0ms; }
+  .why-grid .reveal:nth-child(2){ transition-delay:60ms; }
+  .why-grid .reveal:nth-child(3){ transition-delay:120ms; }
+  .why-grid .reveal:nth-child(4){ transition-delay:180ms; }
+  .why-grid .reveal:nth-child(5){ transition-delay:240ms; }
+  .concept-grid .reveal:nth-child(2){ transition-delay:120ms; }
+ 
+  @media (max-width:860px){
+    .hero-inner{ grid-template-columns:1fr; }
+    .nav-links a:not([href^="tel"]){ display:none; }
+    .nav-links{ display:flex; }
+    .nav-cta{ display:inline-flex; padding:8px 14px; font-size:13px; }
+    .service-grid{ grid-template-columns:1fr; }
+    .process-item{ grid-template-columns:1fr; gap:8px; }
+    .footer-inner{ flex-direction:column; gap:14px; text-align:center; }
+  }
+ 
+  @media (prefers-reduced-motion:reduce){
+    *{ animation:none !important; transition:none !important; }
+    html{ scroll-behavior:auto; }
+  }
+</style>
+<style>
+/* ---------- work / featured concepts ---------- */
+.work { border-top: 1px solid var(--line); }
+.concept-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+.concept-card{
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--surface);
+  transition: border-color .3s, transform .3s;
+}
+.concept-card:hover{ border-color: var(--line-strong); transform: translateY(-4px); }
+ 
+.work-mock{ overflow: hidden; }
+ 
+/* image-based preview: shown in FULL, no crop */
+.work-mock-screen{ position: relative; }
+.work-mock-screen img{
+  width: 100%;
+  display: block;
+  height: auto;
+}
+ 
+/* live iframe preview: scaled to fit, full page visible, no crop */
+.iframe-preview{
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--bg-alt);
+}
+.iframe-preview iframe{
+  position: absolute;
+  top: 0; left: 0;
+  width: 1440px;
+  height: 900px;
+  border: 0;
+  transform-origin: top left;
+  pointer-events: none;
+}
+ 
+.concept-meta{ padding: 26px 26px 28px; display: flex; flex-direction: column; gap: 14px; }
+.concept-tags{ display: flex; gap: 8px; flex-wrap: wrap; }
+.concept-tag{
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-dim);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 4px 10px;
+}
+.concept-title{ font-size: clamp(22px, 2.4vw, 28px); line-height: 1.1; margin: 0; }
+.concept-desc{ color: var(--muted); font-size: 14.5px; line-height: 1.7; margin: 0; }
+.concept-cta{
+  font-size: 14px;
+  color: var(--accent);
+  border-bottom: 1px solid rgba(79,125,250,0.35);
+  padding-bottom: 2px;
+  transition: color .2s, border-color .2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  margin-top: 4px;
+}
+.concept-cta:hover{ color: #fff; border-color: rgba(255,255,255,0.4); }
+ 
+@media (max-width: 900px) {
+  .concept-grid{ grid-template-columns: 1fr; gap: 32px; }
+}
+</style>
+ 
+</head>
+<body>
+ 
+<div class="scroll-progress" id="scroll-progress"></div>
+<div class="grid-bg"></div>
+ 
+<header id="top">
+  <nav>
+    <a href="#top" class="logo" onclick="window.scrollTo({top:0, behavior:'smooth'}); return false;"><span class="dot"></span><span class="word">Z</span><span class="word" style="transition-delay:20ms">a</span><span class="word" style="transition-delay:40ms">v</span><span class="word" style="transition-delay:60ms">o</span><span class="word" style="transition-delay:80ms">r</span><span class="word" style="transition-delay:100ms">a</span></a>
+    <div class="nav-links nav-mobile-hide">
+      <a href="#services">Services</a>
+      <a href="#work">Work</a>
+      <a href="#why">Why Zavora</a>
+      <a href="#process">Process</a>
+      <a href="#contact">Contact</a>
+      <a href="tel:07351010035">07351 010035</a>
+    </div>
+    <a href="#contact" class="nav-cta nav-mobile-hide">Free Quote</a>
+  </nav>
+</header>
+ 
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">Web design &amp; build studio</div>
+      <h1>We draft it,<br>we ship it, <em>properly.</em></h1>
+      <p>Zavora designs and builds websites for businesses who'd rather their site felt considered than templated — from first sketch to production, measured at every step.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">Get a Free Quote →</a>
+        <a href="tel:07351010035" class="btn-ghost">Or call 07351 010035</a>
+      </div>
+    </div>
+ 
+    <div class="mock reveal">
+      <div class="dim-line dim-top"><span>1440px</span><span>viewport</span></div>
+      <div class="mock-bar">
+        <span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span>
+        <span class="mock-url">zavora.co.uk</span>
+      </div>
+      <div class="mock-body">
+        <div class="dim-line dim-side"><span>820px</span></div>
+        <div class="mock-row">
+          <div class="mock-block" style="width:40%; height:14px;"></div>
+          <div class="mock-block mock-anim" style="width:20%; height:14px;"></div>
+        </div>
+        <div class="mock-block mock-anim" style="height:120px;"></div>
+        <div class="mock-row">
+          <div class="mock-block" style="width:33%; height:70px;"></div>
+          <div class="mock-block" style="width:33%; height:70px;"></div>
+          <div class="mock-block" style="width:33%; height:70px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<section class="services" id="services">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">What I offer</div>
+      <h2>Everything your website needs, in one place.</h2>
+      <p>From a first design to the server it runs on — one point of contact for the whole thing.</p>
+    </div>
+    <div class="service-grid">
+      <div class="service-card reveal">
+        <div class="service-tag">01 / DESIGN</div>
+        <h3>Web design</h3>
+        <p>New websites designed and built around what your business actually does — not a template with your logo dropped in.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-tag">02 / REDESIGN</div>
+        <h3>Web redesign</h3>
+        <p>A modern rebuild of an existing site that's fallen behind — same content, brought up to a current standard.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-tag">03 / MOBILE</div>
+        <h3>Mobile optimisation</h3>
+        <p>Sites built and tested to work properly on phones and tablets, not just squeezed to fit.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-tag">04 / SEO</div>
+        <h3>SEO basics</h3>
+        <p>Page titles, headings, meta descriptions, and site structure set up so search engines can find and understand your site.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-tag">05 / LOCAL</div>
+        <h3>Google Business Profile setup</h3>
+        <p>Your business set up and verified on Google, so you show up in local search and maps results.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-tag">06 / CARE</div>
+        <h3>Website maintenance</h3>
+        <p>Regular updates, backups, and fixes so your site keeps running smoothly after launch.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-tag">07 / HOSTING</div>
+        <h3>Web hosting</h3>
+        <p>Fast, secure hosting included and managed for you, with no need to deal with a separate provider.</p>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<section class="why" id="why">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Why choose Zavora</div>
+      <h2>Built to make the decision easy.</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal">
+        <div class="why-num">01</div>
+        <h3>Fast delivery</h3>
+        <p>Most sites are designed and launched in weeks, not months.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-num">02</div>
+        <h3>Mobile-friendly designs</h3>
+        <p>Every site is built to look and work properly on phones, not just desktops.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-num">03</div>
+        <h3>SEO-ready websites</h3>
+        <p>The groundwork for showing up in search is built in from day one.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-num">04</div>
+        <h3>Affordable pricing</h3>
+        <p>Straightforward pricing built for small businesses, not agency budgets.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-num">05</div>
+        <h3>Ongoing support</h3>
+        <p>Help doesn't stop at launch — I'm on hand for updates and questions after your site goes live.</p>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<section class="work" id="work">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Featured concepts</div>
+      <h2>From brief to browser.</h2>
+      <p>Two full concept sites, designed from scratch for different businesses, to show what a Zavora website actually looks and feels like.</p>
+    </div>
+    <div class="concept-grid">
+ 
+      <div class="concept-card reveal">
+        <div class="mock work-mock">
+          <div class="mock-bar">
+            <span class="mock-dot"></span>
+            <span class="mock-dot"></span>
+            <span class="mock-dot"></span>
+            <span class="mock-url">maisondoree.co.uk</span>
+          </div>
+          <div class="iframe-preview" id="maison-preview">
+            <iframe id="maison-iframe" title="Maison Dorée concept website preview" loading="lazy" tabindex="-1"></iframe>
+          </div>
+        </div>
+        <div class="concept-meta">
+          <div class="concept-tags">
+            <span class="concept-tag">Bakery</span>
+            <span class="concept-tag">Hospitality</span>
+          </div>
+          <h3 class="concept-title">Maison Dorée</h3>
+          <p class="concept-desc">A full concept for a London artisan pâtisserie — editorial typography, a curated product grid, and warm photography that earns trust before visitors reach the menu.</p>
+          <a href="#" id="maison-open" class="concept-cta">View full concept ↗</a>
+        </div>
+      </div>
+ 
+      <div class="concept-card reveal">
+        <div class="mock work-mock">
+          <div class="mock-bar">
+            <span class="mock-dot"></span>
+            <span class="mock-dot"></span>
+            <span class="mock-dot"></span>
+            <span class="mock-url">fernbrookstudio.co.uk</span>
+          </div>
+          <div class="iframe-preview" id="fernbrook-preview">
+            <iframe id="fernbrook-iframe" title="Fernbrook Studio concept website preview" loading="lazy" tabindex="-1"></iframe>
+          </div>
+        </div>
+        <div class="concept-meta">
+          <div class="concept-tags">
+            <span class="concept-tag">Architecture</span>
+            <span class="concept-tag">Interiors</span>
+          </div>
+          <h3 class="concept-title">Fernbrook Studio</h3>
+          <p class="concept-desc">A concept for an architecture &amp; interiors practice — an editorial, light-filled layout with a masonry project gallery, built for a completely different feel to Zavora's own site.</p>
+          <a href="#" id="fernbrook-open" class="concept-cta">View full concept ↗</a>
+        </div>
+      </div>
+ 
+    </div>
+  </div>
+</section>
+ 
+<section class="process" id="process">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">How a project runs</div>
+      <h2>Four stages, start to launch.</h2>
+    </div>
+    <div class="process-list">
+      <div class="process-item reveal">
+        <div class="process-num">01</div>
+        <h3>Discovery</h3>
+        <p>A working session to pin down goals, audience, and what the site needs to do — before anything gets designed.</p>
+      </div>
+      <div class="process-item reveal">
+        <div class="process-num">02</div>
+        <h3>Design</h3>
+        <p>Wireframes first, then full visual design — reviewed with you at each stage, not revealed all at once.</p>
+      </div>
+      <div class="process-item reveal">
+        <div class="process-num">03</div>
+        <h3>Build</h3>
+        <p>The approved design gets built as a real, fast, responsive site — tested across browsers and devices.</p>
+      </div>
+      <div class="process-item reveal">
+        <div class="process-num">04</div>
+        <h3>Launch</h3>
+        <p>We handle the move to your domain and hosting, then stay on for a settling-in period after go-live.</p>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<section class="cta" id="contact">
+  <div class="wrap reveal">
+    <div class="eyebrow" style="justify-content:center;">Let's talk</div>
+    <h2>Have a project in mind?</h2>
+    <p>Tell me what you're building — I'll reply within a day with next steps.</p>
+    <div class="cta-actions">
+      <a href="tel:07351010035" class="btn-primary">Call 07351 010035</a>
+      <a href="mailto:zavora_web@outlook.com" class="btn-ghost" id="email-btn" onclick="try{navigator.clipboard.writeText('zavora_web@outlook.com');var el=document.getElementById('email-btn');var old=el.textContent;el.textContent='Copied — zavora_web@outlook.com';setTimeout(function(){el.textContent=old;},2500);}catch(e){}">Or email zavora_web@outlook.com</a>
+    </div>
+  </div>
+</section>
+ 
+<footer>
+  <div class="wrap footer-inner">
+    <div>© 2026 Zavora.</div>
+    <div class="footer-links">
+      <a href="#work">Work</a>
+      <a href="#services">Services</a>
+      <a href="#why">Why Zavora</a>
+      <a href="tel:07351010035">07351 010035</a>
+    </div>
+  </div>
+</footer>
+ 
+<script>
+  const maisonHTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Maison Dorée — artisan pâtisserie concept site.">
+<title>Maison Dorée — Artisan Pâtisserie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fbf6ee;
+    --panel:#f3e9d8;
+    --ink:#2b2016;
+    --muted:#8a7a63;
+    --muted-2:#b3a48a;
+    --line:rgba(43,32,22,0.12);
+    --line-strong:rgba(43,32,22,0.28);
+    --gold:#a9782f;
+    --gold-soft:rgba(169,120,47,0.14);
+    --plum:#5c3a3a;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  ::selection{ background:var(--gold); color:#fff; }
+  a{ color:inherit; text-decoration:none; }
+ 
+  h1,h2,h3{ font-family:'Cormorant Garamond', serif; font-weight:600; letter-spacing:0; }
+ 
+  .wrap{ max-width:1160px; margin:0 auto; padding:0 36px; }
+ 
+  header{
+    position:sticky; top:0; z-index:50;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:22px 36px;
+    background:rgba(251,246,238,0.85);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .brand{ font-family:'Cormorant Garamond', serif; font-size:24px; letter-spacing:0.02em; }
+  .brand i{ color:var(--gold); }
+  nav.links{ display:flex; gap:32px; font-size:13px; letter-spacing:0.04em; color:var(--muted); }
+  nav.links a{ transition:color .25s; }
+  nav.links a:hover{ color:var(--ink); }
+  .book-btn{
+    font-size:13px; padding:10px 20px; border:1px solid var(--line-strong); border-radius:2px;
+    transition:background .25s, border-color .25s;
+  }
+  .book-btn:hover{ background:var(--gold-soft); border-color:var(--gold); }
+ 
+  /* hero */
+  .hero{ padding:90px 36px 70px; text-align:center; }
+  .hero-eyebrow{ font-size:12px; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold); margin-bottom:20px; }
+  .hero h1{ font-size:clamp(42px,7vw,80px); line-height:1.05; }
+  .hero h1 i{ color:var(--gold); }
+  .hero p{ max-width:480px; margin:24px auto 0; color:var(--muted); font-size:16px; }
+  .hero-strip{
+    margin-top:56px; display:grid; grid-template-columns:repeat(3,1fr); gap:2px;
+    background:var(--line);
+  }
+  .hero-strip div{ aspect-ratio:4/3; }
+  .p1{ background:linear-gradient(150deg,#d9b06a,#a9782f); }
+  .p2{ background:linear-gradient(150deg,#e7cba0,#c99a52); }
+  .p3{ background:linear-gradient(150deg,#5c3a3a,#7d5252); }
+ 
+  section{ padding:100px 36px; position:relative; }
+  .sec-head{ max-width:560px; margin:0 auto 56px; text-align:center; }
+  .sec-eyebrow{ font-size:12px; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold); margin-bottom:14px; }
+  .sec-head h2{ font-size:clamp(30px,4vw,46px); }
+  .sec-head p{ color:var(--muted); margin-top:14px; font-size:15px; }
+ 
+  /* products */
+  .products{ background:var(--panel); }
+  .product-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:32px; }
+  .product-card{
+    background:var(--bg); border:1px solid var(--line); border-radius:4px; overflow:hidden;
+    transition:transform .35s, box-shadow .35s;
+  }
+  .product-card:hover{ transform:translateY(-6px); box-shadow:0 20px 40px -20px rgba(43,32,22,0.25); }
+  .product-img{ aspect-ratio:4/3; }
+  .g1{ background:linear-gradient(160deg,#e7cba0,#a9782f); }
+  .g2{ background:linear-gradient(160deg,#d9b06a,#7d5252); }
+  .g3{ background:linear-gradient(160deg,#c99a52,#5c3a3a); }
+  .g4{ background:linear-gradient(160deg,#f0dcae,#c99a52); }
+  .g5{ background:linear-gradient(160deg,#a9782f,#5c3a3a); }
+  .g6{ background:linear-gradient(160deg,#e7cba0,#8a5a3a); }
+  .product-info{ padding:20px 22px; display:flex; justify-content:space-between; align-items:baseline; }
+  .product-info h3{ font-size:20px; }
+  .product-info span{ font-family:'Inter',sans-serif; font-size:13px; color:var(--gold); }
+ 
+  /* story */
+  .story{ display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
+  .story-img{ aspect-ratio:4/5; background:linear-gradient(155deg,#7d5252,#2b2016); border-radius:4px; }
+  .story-copy .sec-eyebrow{ text-align:left; }
+  .story-copy h2{ font-size:clamp(28px,3.6vw,42px); text-align:left; }
+  .story-copy p{ color:var(--muted); font-size:15px; margin-top:18px; line-height:1.8; }
+ 
+  /* testimonial */
+  .testimonial{ background:var(--plum); color:#f3e9d8; text-align:center; }
+  .testimonial blockquote{ font-family:'Cormorant Garamond', serif; font-style:italic; font-size:clamp(24px,3vw,34px); max-width:760px; margin:0 auto; line-height:1.4; }
+  .testimonial cite{ display:block; font-family:'Inter',sans-serif; font-style:normal; font-size:13px; opacity:0.7; margin-top:22px; }
+ 
+  /* visit */
+  .visit{ text-align:center; }
+  .visit h2{ font-size:clamp(32px,4.5vw,50px); }
+  .visit-details{ display:flex; justify-content:center; gap:56px; margin-top:40px; flex-wrap:wrap; }
+  .visit-item{ text-align:left; }
+  .visit-label{ font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--gold); }
+  .visit-val{ font-size:15px; margin-top:6px; }
+  .visit-cta{
+    display:inline-block; margin-top:44px; padding:14px 30px; background:var(--ink); color:var(--bg);
+    border-radius:2px; font-size:14px; transition:background .25s;
+  }
+  .visit-cta:hover{ background:var(--gold); }
+ 
+  footer{ padding:36px; display:flex; justify-content:space-between; color:var(--muted-2); font-size:12px; border-top:1px solid var(--line); flex-wrap:wrap; gap:12px; }
+ 
+  .reveal{ opacity:0; transform:translateY(20px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+ 
+  @media (max-width:860px){
+    nav.links, .book-btn{ display:none; }
+    .hero-strip{ grid-template-columns:1fr; }
+    .product-grid{ grid-template-columns:1fr 1fr; }
+    .story{ grid-template-columns:1fr; gap:32px; }
+    .story-copy h2, .story-copy .sec-eyebrow{ text-align:center; }
+    .story-copy p{ text-align:center; }
+  }
+  @media (max-width:600px){
+    header{ padding:18px 20px; }
+    section{ padding:70px 20px; }
+    .wrap{ padding:0 20px; }
+    .product-grid{ grid-template-columns:1fr; }
+    .visit-details{ gap:28px; justify-content:flex-start; }
+  }
+  @media (prefers-reduced-motion:reduce){ *{ animation:none !important; transition:none !important; } }
+</style>
+</head>
+<body>
+ 
+<header>
+  <div class="brand">Maison <i>Dorée</i></div>
+  <nav class="links">
+    <a href="#products">Menu</a>
+    <a href="#story">Our story</a>
+    <a href="#visit">Visit</a>
+  </nav>
+  <a href="#visit" class="book-btn">Order ahead</a>
+</header>
+ 
+<section class="hero">
+  <div class="hero-eyebrow">Artisan pâtisserie — London</div>
+  <h1>Baked slowly.<br>Sold <i>daily.</i></h1>
+  <p>A small pâtisserie making viennoiserie, tarts, and celebration cakes the traditional way — nothing rushed, nothing frozen.</p>
+  <div class="hero-strip reveal">
+    <div class="p1"></div><div class="p2"></div><div class="p3"></div>
+  </div>
+</section>
+ 
+<section class="products" id="products">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow">On the counter</div>
+      <h2>Today's selection.</h2>
+      <p>A small, changing menu — made in the morning, gone by afternoon.</p>
+    </div>
+    <div class="product-grid">
+      <div class="product-card reveal"><div class="product-img g1"></div><div class="product-info"><h3>Pain au chocolat</h3><span>£3.80</span></div></div>
+      <div class="product-card reveal"><div class="product-img g2"></div><div class="product-info"><h3>Tarte au citron</h3><span>£5.50</span></div></div>
+      <div class="product-card reveal"><div class="product-img g3"></div><div class="product-info"><h3>Kouign-amann</h3><span>£4.20</span></div></div>
+      <div class="product-card reveal"><div class="product-img g4"></div><div class="product-info"><h3>Almond croissant</h3><span>£4.00</span></div></div>
+      <div class="product-card reveal"><div class="product-img g5"></div><div class="product-info"><h3>Paris-Brest</h3><span>£6.20</span></div></div>
+      <div class="product-card reveal"><div class="product-img g6"></div><div class="product-info"><h3>Sourdough loaf</h3><span>£5.00</span></div></div>
+    </div>
+  </div>
+</section>
+ 
+<section class="story" id="story">
+  <div class="story-img reveal"></div>
+  <div class="story-copy reveal">
+    <div class="sec-eyebrow">Our story</div>
+    <h2>Trained in Lyon,<br>baking in London.</h2>
+    <p>Maison Dorée began as a market stall in 2019, built on classical French technique and a refusal to cut corners. Every laminated dough is still turned by hand, every tart shell blind-baked the same morning it's filled.</p>
+    <p>What started as a weekend stall now bakes daily for a small shopfront in East London — same recipes, same patience.</p>
+  </div>
+</section>
+ 
+<section class="testimonial">
+  <div class="wrap reveal">
+    <blockquote>"The best croissant I've had outside Paris — and I'm not exaggerating."</blockquote>
+    <cite>— Local review, East London Eats</cite>
+  </div>
+</section>
+ 
+<section class="visit" id="visit">
+  <div class="wrap reveal">
+    <div class="sec-eyebrow">Visit</div>
+    <h2>Come by before the shelves empty.</h2>
+    <div class="visit-details">
+      <div class="visit-item"><div class="visit-label">Hours</div><div class="visit-val">Tue–Sat, 8am–3pm</div></div>
+      <div class="visit-item"><div class="visit-label">Location</div><div class="visit-val">East London</div></div>
+      <div class="visit-item"><div class="visit-label">Orders</div><div class="visit-val">Custom cakes, 48hrs notice</div></div>
+    </div>
+    <a href="#" class="visit-cta">Order ahead →</a>
+  </div>
+</section>
+ 
+<footer>
+  <div>© 2026 Maison Dorée. Concept site.</div>
+  <div>Design &amp; build by Zavora</div>
+</footer>
+ 
+<script>
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+<\/script>
+ 
+</body>
+</html>
+`;
+  const fernbrookHTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Fernbrook Studio — architecture and interior design concept site.">
+<title>Fernbrook Studio — Architecture &amp; Interiors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#14181a;
+    --bg-panel:#1b2123;
+    --ink:#eef1ee;
+    --muted:#a7b0ac;
+    --muted-2:#6b7472;
+    --line:rgba(238,241,238,0.12);
+    --line-strong:rgba(238,241,238,0.28);
+    --clay:#6f9db0;
+    --clay-soft:rgba(111,157,176,0.16);
+    --olive:#93a487;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  ::selection{ background:var(--clay); color:#fff; }
+  a{ color:inherit; text-decoration:none; }
+  img,svg{ display:block; max-width:100%; }
+ 
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    letter-spacing:-0.01em;
+  }
+ 
+  .wrap{ max-width:1240px; margin:0 auto; padding:0 40px; }
+ 
+  /* ---- scroll progress ---- */
+  .progress{
+    position:fixed; top:0; left:0; height:2px; background:var(--clay);
+    width:0%; z-index:100; transition:width .1s linear;
+  }
+ 
+  /* ---- side index nav ---- */
+  .index-nav{
+    position:fixed;
+    top:50%; left:40px;
+    transform:translateY(-50%);
+    z-index:60;
+    display:flex; flex-direction:column; gap:22px;
+  }
+  .index-nav a{
+    font-family:'Inter', sans-serif;
+    font-size:11px;
+    letter-spacing:0.1em;
+    color:var(--muted-2);
+    display:flex; align-items:center; gap:10px;
+    transition:color .25s;
+  }
+  .index-nav a .ln{ width:14px; height:1px; background:var(--muted-2); transition:width .25s, background .25s; }
+  .index-nav a:hover, .index-nav a.active{ color:var(--ink); }
+  .index-nav a:hover .ln, .index-nav a.active .ln{ width:26px; background:var(--clay); }
+ 
+  /* ---- top bar ---- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:55;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:26px 40px;
+    mix-blend-mode:difference;
+  }
+  .brand{ font-family:'Fraunces', serif; font-size:19px; color:#fff; }
+  .brand em{ font-style:italic; color:var(--clay); }
+  .top-cta{
+    font-size:12px; letter-spacing:0.06em; color:#fff;
+    border-bottom:1px solid rgba(255,255,255,0.5);
+    padding-bottom:2px;
+  }
+ 
+  /* ---- hero ---- */
+  .hero{
+    min-height:100vh;
+    display:flex; flex-direction:column; justify-content:center;
+    padding:120px 40px 60px;
+    position:relative;
+  }
+  .hero-tag{
+    font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted);
+    margin-bottom:26px;
+  }
+  .hero h1{
+    font-size:clamp(46px,8vw,108px);
+    line-height:0.98;
+    max-width:1100px;
+  }
+  .hero h1 .it{ font-style:italic; color:var(--clay); }
+  .hero-sub{
+    display:flex; justify-content:space-between; align-items:flex-end; gap:40px;
+    margin-top:56px; flex-wrap:wrap;
+    border-top:1px solid var(--line); padding-top:28px;
+  }
+  .hero-sub p{ max-width:380px; color:var(--muted); font-size:15.5px; }
+  .hero-scroll{ font-size:12px; color:var(--muted-2); letter-spacing:0.08em; }
+ 
+  .hero-block{
+    position:absolute;
+    top:28%; right:6%;
+    width:min(30vw,320px);
+    aspect-ratio:3/4;
+    background:linear-gradient(155deg,#6b8a94,var(--clay));
+    border-radius:2px;
+    opacity:0;
+    animation:riseIn 1.1s .3s ease forwards;
+  }
+  @keyframes riseIn{ from{opacity:0; transform:translateY(30px);} to{opacity:1; transform:translateY(0);} }
+ 
+  /* ---- section shared ---- */
+  section{ padding:120px 40px; position:relative; }
+  .sec-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:32px; margin-bottom:64px; flex-wrap:wrap; }
+  .sec-num{ font-size:12px; color:var(--muted-2); letter-spacing:0.1em; }
+  .sec-head h2{ font-size:clamp(30px,4vw,52px); margin-top:10px; }
+  .sec-head p{ color:var(--muted); max-width:340px; font-size:15px; }
+ 
+  /* ---- work masonry ---- */
+  .work{ background:var(--bg-panel); }
+  .masonry{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:22px;
+  }
+  .m-card{
+    position:relative;
+    border-radius:2px;
+    overflow:hidden;
+    cursor:default;
+  }
+  .m-card .fill{ position:absolute; inset:0; transition:transform .6s cubic-bezier(.2,.8,.2,1); }
+  .m-card:hover .fill{ transform:scale(1.06); }
+  .m-card .info{
+    position:absolute; left:0; right:0; bottom:0; padding:20px;
+    background:linear-gradient(to top, rgba(20,17,12,0.75), transparent);
+    color:#f6f1e9;
+    opacity:0; transform:translateY(8px);
+    transition:opacity .3s, transform .3s;
+  }
+  .m-card:hover .info{ opacity:1; transform:translateY(0); }
+  .m-card .info .t{ font-family:'Fraunces', serif; font-size:19px; }
+  .m-card .info .s{ font-size:11px; letter-spacing:0.08em; text-transform:uppercase; opacity:0.75; margin-top:4px; }
+  .m1{ grid-column:span 4; aspect-ratio:16/10; }
+  .m2{ grid-column:span 2; aspect-ratio:3/4; }
+  .m3{ grid-column:span 2; aspect-ratio:1/1; }
+  .m4{ grid-column:span 4; aspect-ratio:16/9; }
+  .f1{ background:linear-gradient(135deg,#8a9482,var(--olive)); }
+  .f2{ background:linear-gradient(155deg,#c3c9bf,#9aa397); }
+  .f3{ background:linear-gradient(160deg,#6b8a94,var(--clay)); }
+  .f4{ background:linear-gradient(140deg,#3f4a55,#20262c); }
+ 
+  /* ---- approach ---- */
+  .approach-list{ display:flex; flex-direction:column; }
+  .a-item{
+    display:grid; grid-template-columns:80px 1fr 1fr; gap:32px;
+    padding:38px 0; border-top:1px solid var(--line); align-items:baseline;
+  }
+  .a-item:last-child{ border-bottom:1px solid var(--line); }
+  .a-num{ font-size:13px; color:var(--muted-2); }
+  .a-item h3{ font-size:24px; }
+  .a-item p{ color:var(--muted); font-size:14.5px; max-width:420px; }
+ 
+  /* ---- stats strip ---- */
+  .stats{ display:flex; flex-wrap:wrap; gap:60px; padding:60px 40px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .stat b{ font-family:'Fraunces', serif; font-size:40px; display:block; }
+  .stat span{ font-size:12px; color:var(--muted); letter-spacing:0.06em; text-transform:uppercase; }
+ 
+  /* ---- contact ---- */
+  .contact{ text-align:center; }
+  .contact h2{ font-size:clamp(38px,6vw,72px); }
+  .contact .em{ font-style:italic; color:var(--clay); }
+  .contact-links{ margin-top:40px; display:flex; gap:28px; justify-content:center; flex-wrap:wrap; }
+  .clink{
+    font-size:15px; padding:14px 28px; border:1px solid var(--line-strong); border-radius:2px;
+    transition:background .25s, color .25s, border-color .25s;
+  }
+  .clink.primary{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
+  .clink.primary:hover{ background:var(--clay); border-color:var(--clay); }
+  .clink:not(.primary):hover{ border-color:var(--ink); }
+ 
+  footer{ padding:36px 40px; display:flex; justify-content:space-between; color:var(--muted-2); font-size:12px; border-top:1px solid var(--line); flex-wrap:wrap; gap:12px; }
+ 
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .8s ease, transform .8s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+ 
+  @media (max-width:960px){
+    .index-nav{ display:none; }
+    .masonry{ grid-template-columns:1fr 1fr; }
+    .m1,.m4{ grid-column:span 2; }
+    .a-item{ grid-template-columns:1fr; gap:8px; }
+  }
+  @media (max-width:600px){
+    header{ padding:20px; }
+    .hero{ padding:110px 20px 50px; }
+    section{ padding:80px 20px; }
+    .wrap{ padding:0 20px; }
+    .masonry{ grid-template-columns:1fr; gap:16px; }
+    .m1,.m2,.m3,.m4{ grid-column:span 1; aspect-ratio:4/3; }
+    .hero-block{ display:none; }
+    .stats{ gap:32px; padding:44px 20px; }
+    .stat b{ font-size:30px; }
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+</style>
+</head>
+<body>
+ 
+<div class="progress" id="progress"></div>
+ 
+<header>
+  <div class="brand">Fernbrook <em>Studio</em></div>
+  <a href="#contact" class="top-cta">Enquire</a>
+</header>
+ 
+<nav class="index-nav">
+  <a href="#hero" class="active"><span class="ln"></span>Studio</a>
+  <a href="#work"><span class="ln"></span>Work</a>
+  <a href="#approach"><span class="ln"></span>Approach</a>
+  <a href="#contact"><span class="ln"></span>Contact</a>
+</nav>
+ 
+<section class="hero" id="hero">
+  <div class="hero-block"></div>
+  <div class="hero-tag">Architecture &amp; Interior Design — Est. concept 2026</div>
+  <h1>Spaces that hold<br>their <span class="it">quiet.</span></h1>
+  <div class="hero-sub">
+    <p>Fernbrook designs homes and interiors around light, material, and restraint — building concepts that stay considered from first sketch to final finish.</p>
+    <div class="hero-scroll">Scroll ↓</div>
+  </div>
+</section>
+ 
+<section class="work" id="work">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <div class="sec-num">01 — Selected work</div>
+        <h2>A few recent rooms.</h2>
+      </div>
+      <p>A cross-section of residential and small commercial projects, from single-room reworks to full new-builds.</p>
+    </div>
+    <div class="masonry">
+      <div class="m-card m1 reveal"><div class="fill f1"></div><div class="info"><div class="t">Alder House</div><div class="s">New build — Somerset</div></div></div>
+      <div class="m-card m2 reveal"><div class="fill f2"></div><div class="info"><div class="t">Linden Kitchen</div><div class="s">Interior — London</div></div></div>
+      <div class="m-card m3 reveal"><div class="fill f3"></div><div class="info"><div class="t">Marsh Studio</div><div class="s">Extension — Bristol</div></div></div>
+      <div class="m-card m3 reveal"><div class="fill f4"></div><div class="info"><div class="t">Corvine Loft</div><div class="s">Conversion — Leeds</div></div></div>
+      <div class="m-card m4 reveal"><div class="fill f2"></div><div class="info"><div class="t">Hollow Barn</div><div class="s">Renovation — Devon</div></div></div>
+    </div>
+  </div>
+</section>
+ 
+<section class="approach" id="approach">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <div class="sec-num">02 — Approach</div>
+        <h2>How we work.</h2>
+      </div>
+    </div>
+    <div class="approach-list">
+      <div class="a-item reveal">
+        <div class="a-num">01</div>
+        <h3>Site &amp; brief</h3>
+        <p>Understanding the light, the site, and how you actually want to live in the space before a single line is drawn.</p>
+      </div>
+      <div class="a-item reveal">
+        <div class="a-num">02</div>
+        <h3>Concept</h3>
+        <p>Material, form, and layout explored together — presented as a small number of considered directions, not dozens of options.</p>
+      </div>
+      <div class="a-item reveal">
+        <div class="a-num">03</div>
+        <h3>Detail &amp; drawings</h3>
+        <p>Full technical drawings prepared for planning and build, with every junction and finish specified.</p>
+      </div>
+      <div class="a-item reveal">
+        <div class="a-num">04</div>
+        <h3>On site</h3>
+        <p>Regular visits through the build to keep the finished space true to the original concept.</p>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<div class="stats reveal">
+  <div class="stat"><b>40+</b><span>Projects completed</span></div>
+  <div class="stat"><b>12</b><span>Years practising</span></div>
+  <div class="stat"><b>3</b><span>Design awards</span></div>
+</div>
+ 
+<section class="contact" id="contact">
+  <div class="wrap reveal">
+    <div class="sec-num" style="justify-content:center; display:block;">03 — Get in touch</div>
+    <h2 style="margin-top:14px;">Let's draw <span class="em">something.</span></h2>
+    <div class="contact-links">
+      <a href="#" class="clink primary">Start a project →</a>
+      <a href="#" class="clink">View full portfolio</a>
+    </div>
+  </div>
+</section>
+ 
+<footer>
+  <div>© 2026 Fernbrook Studio. Concept site.</div>
+  <div>Design &amp; build by Zavora</div>
+</footer>
+ 
+<script>
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+ 
+  const bar = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    bar.style.width = pct + '%';
+  });
+ 
+  const navLinks = document.querySelectorAll('.index-nav a');
+  const sections = ['hero','work','approach','contact'].map(id => document.getElementById(id));
+  const navIO = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        navLinks.forEach(l => l.classList.remove('active'));
+        const idx = sections.indexOf(e.target);
+        if(navLinks[idx]) navLinks[idx].classList.add('active');
+      }
+    });
+  }, { threshold: 0.5 });
+  sections.forEach(s => s && navIO.observe(s));
+<\/script>
+ 
+</body>
+</html>
+`;
+</script>
+ 
+<script>
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+ 
+  // scroll progress bar
+  const progressBar = document.getElementById('scroll-progress');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const scrolled = h.scrollTop;
+    const max = h.scrollHeight - h.clientHeight;
+    progressBar.style.width = (max > 0 ? (scrolled / max) * 100 : 0) + '%';
+  }, { passive: true });
+ 
+  // load embedded concept sites into their scaled previews, and wire up "view full" links
+  function setupConceptPreview(previewId, iframeId, openBtnId, html){
+    const wrap = document.getElementById(previewId);
+    const iframe = document.getElementById(iframeId);
+    if(wrap && iframe){
+      if(!iframe.srcdoc) iframe.srcdoc = html;
+      const scale = wrap.clientWidth / 1440;
+      iframe.style.transform = 'scale(' + scale + ')';
+    }
+    const openBtn = document.getElementById(openBtnId);
+    if(openBtn && !openBtn.dataset.wired){
+      openBtn.dataset.wired = 'true';
+      openBtn.addEventListener('click', function(e){
+        e.preventDefault();
+        const blob = new Blob([html], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        window.open(url, '_blank', 'noopener');
+      });
+    }
+  }
+  function refreshConceptPreviews(){
+    setupConceptPreview('maison-preview', 'maison-iframe', 'maison-open', maisonHTML);
+    setupConceptPreview('fernbrook-preview', 'fernbrook-iframe', 'fernbrook-open', fernbrookHTML);
+  }
+  window.addEventListener('resize', refreshConceptPreviews, { passive: true });
+  window.addEventListener('load', refreshConceptPreviews);
+  refreshConceptPreviews();
+</script>
+ 
+</body>
+</html>
